@@ -1,13 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Alert,
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {ProjectContext} from '../providers/ProjectProvider';
 import {CategoryContext} from '../providers/CategoriesProvider';
 import {
@@ -19,6 +11,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import {useNavigation} from '@react-navigation/native';
+import {UserContext} from '../providers/UserProvider';
 
 export type Props = {
   activity: Activity & {id: number};
@@ -29,15 +22,17 @@ export type Props = {
 
 export function CreateActivity(props: Props) {
   const navigation = useNavigation();
+  const {currentUser} = useContext(UserContext);
   const {projects} = useContext(ProjectContext);
   const {categories} = useContext(CategoryContext);
   const [date, setDate] = useState<Date>(props.route.params.dateProp);
   const [save, response, isLoading, error] = useSaveActivity();
   const [update, responseUpdate, isLoadingUpdate, errorUpdate] =
     useUpdateActivity();
-  const [currentActivity, setCurrentActivity] = useState<ActivityResponse>(
-    props.route.params.activity,
-  );
+  const [currentActivity, setCurrentActivity] = useState<ActivityResponse>({
+    ...props.route.params.activity,
+    name: currentUser?.firstName,
+  });
   useEffect(() => {
     if (!errorUpdate && responseUpdate) {
       props.route.params.updateActivities();
@@ -65,7 +60,7 @@ export function CreateActivity(props: Props) {
     }
   }, [date]);
   return (
-    <ScrollView contentContainerStyle={styles.main_container}>
+    <View style={styles.main_container}>
       <View style={styles.container}>
         <Text style={styles.main_text}> Project:</Text>
         <SelectDropdown
@@ -141,7 +136,7 @@ export function CreateActivity(props: Props) {
         }}
         title={props.route.params.title}
       />
-    </ScrollView>
+    </View>
   );
 }
 

@@ -15,19 +15,16 @@ export const Login = () => {
   const storeToken = async (token: string) => {
     try {
       await AsyncStorage.setItem('token', token);
-    } catch (e) {
-      // saving error
-    }
+    } catch (e) {}
   };
   const storeUser = async (user: UserInfo) => {
     try {
       const jsonValue = JSON.stringify(user);
       await AsyncStorage.setItem('user', jsonValue);
-    } catch (e) {
-      // saving error
-    }
+    } catch (e) {}
   };
   useEffect(() => {
+    console.log(error, response);
     if (!error && response) {
       storeToken(response.token);
       storeUser(response.user).then(() => {

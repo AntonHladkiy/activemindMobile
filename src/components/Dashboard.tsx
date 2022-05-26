@@ -1,12 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {UserContext} from '../providers/UserProvider';
 import {ProjectContext} from '../providers/ProjectProvider';
 import {CategoryContext} from '../providers/CategoriesProvider';
@@ -27,6 +20,7 @@ export const defaultActivity = {
   project: '',
   category: '',
   date: new Date().toISOString().slice(0, 10),
+  name: '',
 };
 
 export const defaultActivityFilter = {
@@ -90,7 +84,11 @@ export function Dashboard() {
     />
   );
   return (
-    <ScrollView contentContainerStyle={styles.main_container}>
+    <View style={styles.main_container}>
+      <Text style={styles.main_text}>Current user:</Text>
+      <Text style={styles.main_text}>
+        {currentUser?.firstName} {currentUser?.lastName}
+      </Text>
       {currentUser?.role === UserRole.ADMIN && (
         <>
           <Text style={styles.main_text}>Filters:</Text>
@@ -177,7 +175,7 @@ export function Dashboard() {
       />
       <Text style={styles.main_text}>Activities:</Text>
       <FlatList
-        style={{height: 200}}
+        style={{height: 100}}
         data={activities}
         renderItem={renderItem}
       />
@@ -197,7 +195,7 @@ export function Dashboard() {
         </View>
         <Button onPress={() => resetUser()} title={'Log Out'} />
       </View>
-    </ScrollView>
+    </View>
   );
 }
 

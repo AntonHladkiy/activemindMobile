@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {Login} from '../components/Login';
 import {Dashboard} from '../components/Dashboard';
 import {UserContext} from './UserProvider';
@@ -10,9 +10,6 @@ const Stack = createStackNavigator();
 
 export function AppStack() {
   const {currentUser} = useContext(UserContext);
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
   return (
     <NavigationContainer>
       <Stack.Navigator

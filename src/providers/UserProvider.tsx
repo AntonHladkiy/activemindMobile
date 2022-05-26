@@ -23,7 +23,11 @@ interface Props {
 export const UserProvider = ({children}: Props): ReactElement => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [updater, setUpdater] = useState(true);
-  const resetUser = () => setUser(null);
+  const resetUser = () => {
+    setUser(null);
+    removeToken();
+    removeUser();
+  };
   const updateUser = () => setUpdater(!updater);
   const getUser = async () => {
     try {
@@ -31,6 +35,20 @@ export const UserProvider = ({children}: Props): ReactElement => {
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       // error reading value
+    }
+  };
+  const removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+    } catch (e) {
+      // saving error
+    }
+  };
+  const removeUser = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+    } catch (e) {
+      // saving error
     }
   };
   useEffect(() => {

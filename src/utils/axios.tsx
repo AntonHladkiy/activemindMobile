@@ -9,11 +9,9 @@ export const useCustomAxios = (): AxiosInstance => {
       const value = await AsyncStorage.getItem('token');
       if (value !== null) {
         return value;
-        // value previously stored
       }
     } catch (e) {
       return undefined;
-      // error reading value
     }
   };
   customAxios.interceptors.request.use(async (req: AxiosRequestConfig) => {
@@ -23,8 +21,8 @@ export const useCustomAxios = (): AxiosInstance => {
 
   const adminHeaderAdd = async (req: AxiosRequestConfig) => {
     const acesToken: string | undefined = await getToken();
-    const headers = req.headers as {authorization: string};
-    headers.authorization = acesToken ? acesToken : '';
+    const headers = req.headers as {Authorization: string};
+    headers.Authorization = acesToken ? acesToken : '';
   };
   return customAxios;
 };
